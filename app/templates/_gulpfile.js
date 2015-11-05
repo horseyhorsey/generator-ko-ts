@@ -1,13 +1,12 @@
 // Node modules
-var fs = require('fs'), vm = require('vm'), merge = require('deeply'), chalk = require('chalk'), es = require('event-stream'), path = require('path'), url = require('url');
+var fs = require('fs'), vm = require('vm'), merge = require('deeply'), chalk = require('chalk'), es = require('event-stream');
 
 // Gulp and plugins
-var gulp = require('gulp'), rjs = require('gulp-requirejs-bundler'), concat = require('gulp-concat'), clean = require('gulp-clean'), filter = require('gulp-filter'),
-    replace = require('gulp-replace'), uglify = require('gulp-uglify'), htmlreplace = require('gulp-html-replace'),
-    connect = require('gulp-connect'), babelCore = require('babel-core'), babel = require('gulp-babel'), objectAssign = require('object-assign');
+var gulp = require('gulp'), rjs = require('gulp-requirejs-bundler'), concat = require('gulp-concat'), clean = require('gulp-clean'),
+    replace = require('gulp-replace'), uglify = require('gulp-uglify'), htmlreplace = require('gulp-html-replace')<% if(usesTypeScript) { %>, typescript = require('gulp-tsc')<% } %>;
 
 // Config
-var requireJsRuntimeConfig = vm.runInNewContext(fs.readFileSync('src/app/require.config.js') + '; require;'),
+var requireJsRuntimeConfig = vm.runInNewContext(fs.readFileSync('src/app/require.config.js') + '; require;');
     requireJsOptimizerConfig = merge(requireJsRuntimeConfig, {
         out: 'scripts.js',
         baseUrl: './src',
@@ -28,49 +27,24 @@ var requireJsRuntimeConfig = vm.runInNewContext(fs.readFileSync('src/app/require
             // 'bundle-name': [ 'some/module', 'another/module' ],
             // 'another-bundle-name': [ 'yet-another-module' ]
         }
-    }),
-    transpilationConfig = {
-        root: 'src',
-        skip: ['bower_modules/**', 'app/require.config.js'],
-        babelConfig: {
-            modules: 'amd',
-            sourceMaps: 'inline'
-        }
-    },
-    babelIgnoreRegexes = transpilationConfig.skip.map(function(item) {
-        return babelCore.util.regexify(item);
     });
-
-// Pushes all the source files through Babel for transpilation
-gulp.task('js:babel', function() {
-    return gulp.src(requireJsOptimizerConfig.baseUrl + '/**')
-        .pipe(es.map(function(data, cb) {
-            if (!data.isNull()) {
-                babelTranspile(data.relative, function(err, res) {
-                    if (res) {
-                        data.contents = new Buffer(res.code);
-                    }
-                    cb(err, data);
-                });
-            } else {
-                cb(null, data);
-            }
+<% if (usesTypeScript) { %>
+// Compile all .ts files, producing .js and source map files alongside them
+gulp.task('ts', function() {
+    return gulp.src(['**/*.ts'])
+        .pipe(typescript({
+            module: 'amd',
+            sourcemap: true,
+            outDir: './'
         }))
-        .pipe(gulp.dest('./temp'));
+        .pipe(gulp.dest('./'));
 });
-
+<% } %>
 // Discovers all AMD dependencies, concatenates together all required .js files, minifies them
-gulp.task('js:optimize', ['js:babel'], function() {
-    var config = objectAssign({}, requireJsOptimizerConfig, { baseUrl: 'temp' });
-    return rjs(config)
+gulp.task('js', <% if (usesTypeScript) { %>['ts'], <% } %>function () {
+    return rjs(requireJsOptimizerConfig)
         .pipe(uglify({ preserveComments: 'some' }))
-        .pipe(gulp.dest('./dist/'));    
-})
-
-// Builds the distributable .js files by calling Babel then the r.js optimizer
-gulp.task('js', ['js:optimize'], function () {
-    // Now clean up
-    return gulp.src('./temp', { read: false }).pipe(clean());
+        .pipe(gulp.dest('./dist/'));
 });
 
 // Concatenates CSS files, rewrites relative paths to Bootstrap fonts, copies Bootstrap fonts
@@ -93,50 +67,24 @@ gulp.task('html', function() {
         }))
         .pipe(gulp.dest('./dist/'));
 });
-
+<% if (!usesTypeScript) { %>
 // Removes all files from ./dist/
 gulp.task('clean', function() {
     return gulp.src('./dist/**/*', { read: false })
         .pipe(clean());
 });
-
-// Starts a simple static file server that transpiles ES6 on the fly to ES5
-gulp.task('serve:src', function() {
-    return connect.server({
-        root: transpilationConfig.root,
-        middleware: function(connect, opt) {
-            return [
-                 function (req, res, next) {                     
-                     var pathname = path.normalize(url.parse(req.url).pathname);
-                     babelTranspile(pathname, function(err, result) {
-                        if (err) {
-                            next(err);
-                        } else if (result) {
-                            res.setHeader('Content-Type', 'application/javascript');
-                            res.end(result.code);
-                        } else {
-                            next();
-                        }
-                     });
-                 }
-            ];
-        }
-    });
+<% } else { %>
+// Removes all files from ./dist/, and the .js/.js.map files compiled from .ts
+gulp.task('clean', function() {
+    var distContents = gulp.src('./dist/**/*', { read: false }),
+        generatedJs = gulp.src(['src/**/*.js', 'src/**/*.js.map'<% if(includeTests) { %>, 'test/**/*.js', 'test/**/*.js.map'<% } %>], { read: false })
+            .pipe(es.mapSync(function(data) {
+                // Include only the .js/.js.map files that correspond to a .ts file
+                return fs.existsSync(data.path.replace(/\.js(\.map)?$/, '.ts')) ? data : undefined;
+            }));
+    return es.merge(distContents, generatedJs).pipe(clean());
 });
-
-// After building, starts a trivial static file server
-gulp.task('serve:dist', ['default'], function() {
-    return connect.server({ root: './dist' });
-});
-
-function babelTranspile(pathname, callback) {
-    if (babelIgnoreRegexes.some(function (re) { return re.test(pathname); })) return callback();
-    if (!babelCore.canCompile(pathname)) return callback();
-    var src  = path.join(transpilationConfig.root, pathname);
-    var opts = objectAssign({ sourceFileName: '/source/' + pathname }, transpilationConfig.babelConfig);
-    babelCore.transformFile(src, opts, callback);
-}
-
+<% } %>
 gulp.task('default', ['html', 'js', 'css'], function(callback) {
     callback();
     console.log('\nPlaced optimized files in ' + chalk.magenta('dist/\n'));
