@@ -1,14 +1,14 @@
 {
-  "name": "generator-ko",
+  "name": "generator-ko-ts",
   "version": "0.1.4",
-  "description": "Yeoman generator",
+  "description": "Yeoman generator for Knockout/Typescript scaffold",
   "license": "MIT",
   "main": "app/index.js",
-  "repository": "SteveSanderson/generator-ko",
+  "repository": "aniliht/generator-ko-ts",
   "author": {
-    "name": "Steven Sanderson",
+    "name": "aniliht",
     "email": "",
-    "url": "https://github.com/SteveSanderson"
+    "url": "https://github.com/aniliht"
   },
   "engines": {
     "node": ">=0.10.0"
