@@ -1,7 +1,10 @@
-import $ = require("jquery");
+import jquery = require("jquery");
+import 'tether';
 import ko = require("knockout");
 import bootstrap = require("bootstrap");
 import router = require("./router");
+
+let bs = bootstrap;
 
 // Components can be packaged as AMD modules, such as the following:
 ko.components.register('nav-bar', { require: 'components/nav-bar/nav-bar' });

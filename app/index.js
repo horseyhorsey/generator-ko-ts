@@ -82,6 +82,8 @@ var KoGenerator = yeoman.generators.Base.extend({
     this.template('_bower.json', 'bower.json');
     this.template('_gulpfile.js', 'gulpfile.js');
     this.template('_gitignore', '.gitignore');
+    this.template('_typings.json', '.typings.json');
+    this.template('_tsconfig.json', 'tsconfig.json');
     this.copy('bowerrc', '.bowerrc');
 
     if (this.includeTests) {
@@ -94,7 +96,7 @@ var KoGenerator = yeoman.generators.Base.extend({
     // Explicitly copy the .js files used by the .ts output, since they're otherwise excluded
     if (this.usesTypeScript) {
       this.copy('src/app/require.config.js');
-      this._processDirectory('definitions', 'definitions');
+      this._processDirectory('typings', 'typings');
       
       if (this.includeTests) {
         this.copy('test/require.config.js');

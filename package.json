@@ -1,14 +1,14 @@
 {
-  "name": "generator-ko-ts",
-  "version": "0.1.4",
+  "name": "generator-ko-ts2",
+  "version": "0.1.5",
   "description": "Yeoman generator for Knockout/Typescript scaffold",
   "license": "MIT",
   "main": "app/index.js",
-  "repository": "aniliht/generator-ko-ts",
+  "repository": "horseyhorsey/generator-ko-ts2",
   "author": {
-    "name": "aniliht",
+    "name": "horseyhorsey",
     "email": "",
-    "url": "https://github.com/aniliht"
+    "url": "https://github.com/horseyhorsey"
   },
   "engines": {
     "node": ">=0.10.0"
