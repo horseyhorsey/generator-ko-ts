@@ -8,7 +8,7 @@ var gulp = require('gulp'), rjs = require('gulp-requirejs-bundler'),
     replace = require('gulp-replace'), uglify = require('gulp-uglify'), 
     tsc = typescript = require('gulp-tsc'),
     htmlreplace = require('gulp-html-replace'), typescript = require('gulp-typescript'),
-    sass = require('gulp-sass');
+    sass = require('gulp-sass'),imagemin = require('gulp-imagemin');
 
 //var tsProject = typescript.createProject('tsconfig.json');
 
@@ -69,6 +69,13 @@ gulp.task('html', function() {
             'js': 'scripts.js'
         }))
         .pipe(gulp.dest('./dist/'));
+});
+
+// Run image min on all images
+gulp.task('image', function () {
+    return gulp.src('src/img/**/*.+(png|jpg|gif|svg)')
+    .pipe(imagemin())
+    .pipe(gulp.dest('dist/img'))
 });
 
 // Removes all files from ./dist/, and the .js/.js.map files compiled from .ts
