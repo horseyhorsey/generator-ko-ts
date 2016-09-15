@@ -1,31 +1,38 @@
 {
   "name": "<%= slugName %>",
   "version": "0.0.0",
-  "devDependencies": {
-    "bootstrap": "4.0.0-alpha.4",
-    "gulp": "^3.6.2",
-    "gulp-requirejs-bundler": "^0.1.1",
-    "gulp-concat": "~2.2.0",
-    "gulp-clean": "~0.2.4",
-    "event-stream": "~3.1.0",
-    "gulp-replace": "~0.2.0",
-    "gulp-uglify": "~0.2.1",
-    "gulp-html-replace": "~1.0.0",
-<% if(usesTypeScript) { %>
-    "gulp-typescript": "~2.13.6",
-    "gulp-tsc": "~1.2.3",
-    "typescript": "~1.8.10",
-    "typings": "~1.3.3",
-<% } %>
-<% if(includeTests) { %>
-    "karma": "^0.12.15",
-    "karma-chrome-launcher": "^0.1.3",
-    "karma-jasmine": "^0.1.5",
-    "karma-requirejs": "^0.2.1",
-    "karma-requireglobal-preprocessor": "0.0.0",
-    "requirejs": "^2.3.1",
-<% } %>
-    "deeply": "~0.1.0",
-    "chalk": "~0.4.0"    
-  }
+    "devDependencies": {
+        "bootstrap": "4.0.0-alpha.4",
+        "gulp": "^3.6.2",
+        "gulp-requirejs-bundler": "^0.1.1",
+        "gulp-concat": "~2.2.0",
+        "gulp-clean": "~0.2.4",
+        "event-stream": "~3.1.0",
+        "gulp-replace": "~0.2.0",
+        "gulp-uglify": "~0.2.1",
+        "gulp-html-replace": "~1.0.0",
+        "gulp-sass": "^2.3.2",
+        "<%" "if(usesTypeScript)",
+        {
+            "%>": null,
+            "gulp-typescript": "~2.13.6",
+            "gulp-tsc": "~1.2.3",
+            "typescript": "~1.8.10",
+            "typings": "~1.3.3",
+            "<%"
+        },
+        "%>" "<%",
+        "if(includeTests)" {
+            "%>": null,
+            "karma": "^0.12.15",
+            "karma-chrome-launcher": "^0.1.3",
+            "karma-jasmine": "^0.1.5",
+            "karma-requirejs": "^0.2.1",
+            "karma-requireglobal-preprocessor": "0.0.0",
+            "<%"
+        },
+        "%>": null,
+        "deeply": "~0.1.0",
+        "chalk": "~0.4.0"
+    }
 }

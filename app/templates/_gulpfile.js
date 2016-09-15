@@ -7,7 +7,8 @@ var gulp = require('gulp'), rjs = require('gulp-requirejs-bundler'),
     concat = require('gulp-concat'), clean = require('gulp-clean'),
     replace = require('gulp-replace'), uglify = require('gulp-uglify'), 
     tsc = typescript = require('gulp-tsc'),
-    htmlreplace = require('gulp-html-replace'), typescript = require('gulp-typescript');
+    htmlreplace = require('gulp-html-replace'), typescript = require('gulp-typescript'),
+    sass = require('gulp-sass');
 
 //var tsProject = typescript.createProject('tsconfig.json');
 
@@ -35,12 +36,12 @@ var requireJsRuntimeConfig = vm.runInNewContext(fs.readFileSync('src/app/require
         }
     });
 
-//gulp.task('ts', function() {
-//    var tsResult = tsProject.src() // instead of gulp.src(...) 
-//        .pipe(typescript(tsProject));
- 
-//    return tsResult.js.pipe(gulp.dest('./dist/'));
-//});
+//Builds styles.scss to styles.css
+gulp.task('sass', function () {
+    return gulp.src('./src/sass/styles.scss')
+        .pipe(sass())
+        .pipe(gulp.dest('./src/css'))
+});
 
 // Discovers all AMD dependencies, concatenates together all required .js files, minifies them
 gulp.task('js', function () {
@@ -81,7 +82,7 @@ gulp.task('clean', function() {
     return es.merge(distContents, generatedJs).pipe(clean());
 });
 
-gulp.task('default', ['html', 'js', 'css'], function(callback) {
+gulp.task('default', ['html', 'js', 'sass', 'css'], function(callback) {
     callback();
     console.log('\nPlaced optimized files in ' + chalk.magenta('dist/\n'));
 });
