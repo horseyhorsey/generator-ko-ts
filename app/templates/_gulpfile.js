@@ -59,14 +59,13 @@ gulp.task('js_min', function () {
         .pipe(gulp.dest('./dist/'));
 });
 
-// Concatenates CSS files, rewrites relative paths to Bootstrap fonts, copies Bootstrap fonts
+// Concatenates CSS files, bootstrap, font awesome & site.
 gulp.task('css', function () {
-    var bowerCss = gulp.src('src/bower_modules/bootstrap/dist/css/bootstrap.min.css')
-            .pipe(replace(/url\((')?\.\.\/fonts\//g, 'url($1fonts/')),
+    var bowerCss = gulp.src('src/bower_modules/bootstrap/dist/css/bootstrap.min.css'),
+        faCss = gulp.src('src/bower_modules/font-awesome/css/font-awesome.min.css'),
         appCss = gulp.src('src/css/*.css'),
-        combinedCss = es.concat(bowerCss, appCss).pipe(concat('css.css')),
-        fontFiles = gulp.src('./src/bower_modules/bootstrap/fonts/*', { base: './src/bower_modules/bootstrap/' });
-    return es.concat(combinedCss, fontFiles)
+        combinedCss = es.concat(bowerCss, faCss, appCss).pipe(concat('css.css'));
+    return es.concat(combinedCss)
         .pipe(gulp.dest('./dist/'));
 });
 
@@ -88,6 +87,11 @@ gulp.task('image', function () {
     return gulp.src('src/img/**/*.+(png|jpg|gif|svg)')
     .pipe(imagemin())
     .pipe(gulp.dest('dist/img'))
+});
+
+gulp.task('fonts', function () {
+    return gulp.src('src/bower_modules/font-awesome/fonts/*')
+    .pipe(gulp.dest('dist/fonts'))
 });
 
 //Run sass and css task in a sequence.
@@ -115,7 +119,7 @@ gulp.task('src', ['sass'], function (callback) {
 });
 
 //Serve dist with browser sync
-gulp.task('dist', ['html', 'js', 'sass', 'css'], function (callback) {
+gulp.task('dist', ['html', 'js', 'sass','fonts', 'css'], function (callback) {
 
     browserSync.init({
         server: "./dist"
@@ -138,7 +142,7 @@ gulp.task('clean', function () {
     return es.merge(distContents, generatedJs).pipe(clean());
 });
 
-gulp.task('default', ['html', 'js_min', 'sass', 'css'], function (callback) {
+gulp.task('default', ['html', 'js_min', 'sass', 'fonts', 'css'], function (callback) {
     callback();
     console.log('\nPlaced optimized files in ' + chalk.magenta('dist/\n'));
 });
