@@ -19,8 +19,19 @@ Forked from aniliht reverting the TS change.
 
 * Browsersync - syncing changes in browser
 
+###Dependencies
 
-#### Generate project
+    install Node.js with Npm
+
+####Yeoman
+
+    npm install --global yo
+
+####Local testing:
+
+    In the generator-ko-ts2 folder, run npm link
+
+####Generate new ko-ts2 project
 
         yo ko-ts2
 
