@@ -1,13 +1,11 @@
-<!--
-  The navigation UI that is docked to the top of the window. Most of this markup simply
-  follows Bootstrap conventions. The only Knockout-specific parts are the data-bind
-  attributes on the <li> elements.
--->
-<div class="row">
+<div class="container-fluid">
 
-    <div class="col-xs-12">
-        <nav class="navbar navbar-light bg-fuchsia">
-            <button class="navbar-toggler hidden-sm-up" type="button"
+    <nav class="navbar navbar-default navbar-static-top">
+
+        <div class="container-fluid">
+
+            <!--BUTTON-->
+            <button class="btn navbar-btn navbar-toggler hidden-sm-up" type="button"
                     data-toggle="collapse"
                     data-target="#exCollapsingNavbar2"
                     aria-controls="exCollapsingNavbar2"
@@ -15,20 +13,35 @@
                 &#9776;
             </button>
 
-            <br />
-          
-
             <div class="collapse navbar-toggleable-xs" id="exCollapsingNavbar2">
-                <a class="navbar-brand" href="#">Yo Ko-Ts2</a>
-                <ul class="nav navbar-nav">                    
-                    <li class="nav-item active " data-bind="css: { active: route().page === 'home-page' }">
-                        <div class="col-xs-12"><a class="nav-link " href="#"><span class="fa fa-2x fa-home"> Home</span></a></div>
+
+                <!--NAVBAR HEADER-->
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">KO MVC</a>
+                </div>
+
+                <!--NAVBAR LIST ITEMS-->
+                <ul class="nav nav-tabs nav-justified">
+
+                    <!--HOME-->
+                    <li role="presentation" class="active" data-bind="css: { active: route().page === 'home-page' }">
+                        <a class="nav-link " href="#">
+                            <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                            Home
+                        </a>
                     </li>
-                    <li class="nav-item" data-bind="css: { active: route().page === 'about-page' }">
-                        <div class="col-xs-12"><a class="nav-link" href="#about"><span class="fa fa-2x fa-question"> About</span></a></div>
+
+                    <!--ABOUT-->
+                    <li role="presentation" class="active" data-bind="css: { active: route().page === 'about' }">
+                        <a class="nav-link " href="#about">
+                            <span class="glyphicon glyphicon-text-color" aria-hidden="true"></span>
+                            About
+                        </a>
                     </li>
                 </ul>
+
             </div>
-        </nav>
-    </div>
+        </div>
+
+    </nav>
 </div>

@@ -1,18 +1,18 @@
 # generator-ko-ts2
 
-Fork of Steven Sanderson's generator-KO for typescript. 
-
-Forked from aniliht reverting the TS change.
+    Fork of Steven Sanderson's generator-KO for typescript. 
+    Forked from aniliht reverting the TS change.
+    If need Typescript any typings: npm install @types/knockout
 
 ##### Includes
 
 * Knockout MVVM
 * Typescript
-* Bootstrap 4 alpha
+* Bootstrap 3
 * Sass - for css
-* Browsersync - syncing changes in browser
+* Browsersync
 
-###NodeJs Npm
+### NodeJs Npm - For new installs
 
     install Node.js with Npm
     
@@ -26,17 +26,11 @@ Forked from aniliht reverting the TS change.
     npm install -g gulp    
     npm install -g gulp-cli
 
-Typescript:
-http://www.typescriptlang.org/#download-links
-
-VS Web Essentials:
-http://vswebessentials.com/download    
-
-####Local install of generator:
+#### Local install of generator:
 
     In the generator-ko-ts2 folder, run npm link
 
-####Generate new ko-ts2 project
+#### Generate new ko-ts2 project
 
         yo ko-ts2
 
@@ -46,14 +40,11 @@ http://vswebessentials.com/download
         
 #### Serve commands
     
+    gulp default
     gulp dist
     gulp src
 
 #### Generate components
         
-
-        yo ko-ts2:component componentName
-
-
-Check gulpfile for more tasks.
+    yo ko-ts2:component componentName
 

@@ -2,6 +2,7 @@ var require = {
     baseUrl: ".",
     paths: {
         "tether": "bower_modules/tether/dist/js/tether.min",
+        "popper": "bower_modules/popper.js/dist/umd/popper.min'",
         "bootstrap": "bower_modules/bootstrap/dist/js/bootstrap.min",
         "crossroads": "bower_modules/crossroads/dist/crossroads.min",
         "hasher": "bower_modules/hasher/dist/js/hasher.min",

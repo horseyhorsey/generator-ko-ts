@@ -35,6 +35,30 @@ requireJsOptimizerConfig = merge(requireJsRuntimeConfig, {
     }
 });
 
+//Gen Js from Typescript files
+var ts = require("gulp-typescript");
+gulp.task("tsc", function () {
+    gulp.src("src/**/*.ts")
+        .pipe(ts({
+            "compilerOptions": {
+                "target": "es5",
+                "lib": ["es2015", "dom"],
+                "module": "amd",
+                "moduleResolution": "node",
+                "sourceMap": true,
+                "emitDecoratorMetadata": true,
+                "experimentalDecorators": true,
+                "removeComments": false,
+                "noImplicitAny": true
+            },
+            "exclude": [
+                "node_modules"
+            ],
+            "compileOnSave": true
+        }))
+        .pipe(gulp.dest("wwwroot/js"));
+});
+
 //Builds styles.scss to styles.css
 gulp.task('sass', function () {
     return gulp.src('./src/sass/styles.scss')
@@ -90,7 +114,8 @@ gulp.task('image', function () {
 });
 
 gulp.task('fonts', function () {
-    return gulp.src('src/bower_modules/font-awesome/fonts/*')
+
+    return gulp.src(['src/bower_modules/font-awesome/fonts/*', 'src/bower_modules/bootstrap/dist/fonts/*'])
     .pipe(gulp.dest('dist/fonts'))
 });
 
@@ -133,7 +158,7 @@ gulp.task('dist', ['html', 'js', 'sass','fonts', 'css'], function (callback) {
 
 // Removes all files from ./dist/, and the .js/.js.map files compiled from .ts
 gulp.task('clean', function () {
-    var distContents = gulp.src('./dist/**/*', { read: false }),
+    var distContents = gulp.src('dist/**/*', { read: false }),
         generatedJs = gulp.src(['src/**/*.js', 'src/**/*.js.map'], { read: false })
             .pipe(es.mapSync(function (data) {
                 // Include only the .js/.js.map files that correspond to a .ts file
