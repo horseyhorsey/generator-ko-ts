@@ -82,8 +82,7 @@ var KoGenerator = yeoman.generators.Base.extend({
     this.template('_package.json', 'package.json');
     this.template('_bower.json', 'bower.json');
     this.template('_gulpfile.js', 'gulpfile.js');
-    this.template('_gitignore', '.gitignore');
-    this.template('_typings.json', '.typings.json');
+    this.template('_gitignore', '.gitignore');    
     this.template('_tsconfig.json', 'tsconfig.json');
     this.copy('bowerrc', '.bowerrc');
 
